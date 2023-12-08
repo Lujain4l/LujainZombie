@@ -31,15 +31,21 @@ public class npcController : MonoBehaviour{
     private bool stateChangedFlag = false;//used once to change state of player
     private bool attacking;
     private bool hasDied;
-
+    private int f=0;
+    public AudioSource Damaged;
+    public AudioSource dead;
+    public AudioSource idle;
+    public AudioSource stateSound;
 
     void Start(){
+
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         playerObject = GameObject.FindGameObjectWithTag("Player");
         if(playerObject == null)print("no object with player tag");
 
         healthSlider.maxValue = health;
+        idle.Play();
     }
 
     void Update(){
@@ -47,12 +53,18 @@ public class npcController : MonoBehaviour{
         if(hasDied)return;
 
         if(health < 1 && !hasDied){
+            idle.Pause();
             hasDied = true;
+            dead.Play();
             animator.SetTrigger("die");
             healthSlider.transform.parent.gameObject.SetActive(false);
         }
+        if (Input.GetKeyDown("f"))
+        {
+            f++;
+            Debug.Log("ssssssssss");
+        }
 
-        
         healthSlider.value = health;
         
         if(characterState == 0){
@@ -86,21 +98,44 @@ public class npcController : MonoBehaviour{
 
     void FixedUpdate(){
         animations();
-        checkNPC();    
+     
+
+    }
+
+     void LateUpdate()
+    {
+        checkNPC();
     }
 
     void checkNPC(){
-        if(getPlayerDistance() < 20 && !stateChangedFlag){
-            stateChangedFlag = true ;
+
+
+        if ((f % 2 == 0) && !stateChangedFlag)
+        {
+            stateChangedFlag = true;
             Executer exe = new Executer(this);
-            exe.DelayExecute(3 , x=> setState(1));
-            
+            exe.DelayExecute(0, x => setState(1));
+            stateSound.Play();
+
         }
-        if(getPlayerDistance() > 20 && stateChangedFlag){
-            stateChangedFlag = false ;
+        else if ((f % 2 != 0) && stateChangedFlag)
+        {
+            stateChangedFlag = false;
             Executer exe = new Executer(this);
-            exe.DelayExecute(8 , x=> setState(0));
+            exe.DelayExecute(0, x => setState(0));
+            stateSound.Play();
         }
+        //if(getPlayerDistance() < 20 && !stateChangedFlag){
+        //    stateChangedFlag = true ;
+        //    Executer exe = new Executer(this);
+        //    exe.DelayExecute(3 , x=> setState(1));
+
+        //}
+        //if(getPlayerDistance() > 20 && stateChangedFlag){
+        //    stateChangedFlag = false ;
+        //    Executer exe = new Executer(this);
+        //    exe.DelayExecute(8 , x=> setState(0));
+        //}
 
 
     }
@@ -152,6 +187,7 @@ public class npcController : MonoBehaviour{
     public void receiveDamage(float value){
         animator.SetTrigger("takeDamage");
         health -= value;
+        Damaged.Play();
     }
 
     //void OnGUI(){

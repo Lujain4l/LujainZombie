@@ -46,12 +46,15 @@ public class controller : MonoBehaviour{
     private Vector3 relativeVector; // used for mouse look
     private float turnAmount = 90;
     private float gravityPower = -9.8f;
-    private bool cursorLoced;
+    private bool cursorLoced=true;
     private float gravityForce = -9.18f;
     private float jumpTimer;
     private float attackCooldown;
     public bool rolling;
     public float turnDirection;
+    public AudioSource Damages;
+    //public AudioSource stateSound;
+    public AudioSource foot;
 
     void Start(){
         inputManager = GetComponent<InputManager>();    
@@ -110,6 +113,7 @@ public class controller : MonoBehaviour{
 
     void combatMovement(){
 
+     ;
         if(isGrounded() && !lightAttack && !heavyAttack && !rolling){
             motionVector = transform.right * inputManager.rawHorizontal + transform.forward * inputManager.rawVertical * (1+ (inputManager.rawVertical > 0 ? inputManager.shift : 0)); 
             characterController.Move(motionVector * combatSpeed * Time.deltaTime);
@@ -171,7 +175,9 @@ public class controller : MonoBehaviour{
 
     public void receiveDamage(float value){
         if(!takingDamage){
+         
             health -= value;
+            Damages.Play();
             animator.SetTrigger("takeDamage");
             Executer bb = new Executer(this);
             bb.DelayExecute(takingDamageTimer , x=> takingDamage = false );
@@ -180,8 +186,8 @@ public class controller : MonoBehaviour{
     }
 
     void peacefulMovement(){
-
-        if(isGrounded() && gravityVector.y < 0)
+       
+        if (isGrounded() && gravityVector.y < 0)
             gravityVector.y = -2;
 
         gravityVector.y += gravityPower * Time.deltaTime;
@@ -210,6 +216,7 @@ public class controller : MonoBehaviour{
 
         }
         characterController.Move(motionVector * movementSpeed * Time.deltaTime);
+      
         
 
         animator.SetBool("grounded",isGrounded());
