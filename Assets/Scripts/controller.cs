@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using LateExe;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(InputManager))]
 [RequireComponent(typeof(Animator))]
@@ -23,6 +24,7 @@ public class controller : MonoBehaviour{
     [Header("character Values")]
     public int characterState = 0;
     public float health = 100;
+    public Slider slider;
     [Range(1,4)]public float movementSpeed = 2;
     [Range(0,.5f)]public float groundClearance;
     [Range(0,1)]public float groundDistance;
@@ -70,9 +72,13 @@ public class controller : MonoBehaviour{
     void Update(){
         playerStates();
 
-        mouseLook();        
-
-    }
+        mouseLook();
+        slider.value = health;
+        if (health < 0)
+        {
+          animator.SetTrigger("death");
+        }
+        }
 
     public void equipMele(){
         if(characterState == 0){

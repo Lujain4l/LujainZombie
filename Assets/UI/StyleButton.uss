@@ -1,0 +1,24 @@
+.style4 {
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0.08);
+    background-color: rgba(0, 0, 0, 0);
+    color: rgb(235, 188, 105);
+    -unity-font-style: normal;
+    font-size: 24px;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    background-image: none;
+    -unity-font: url('project://database/Assets/TextMesh%20Pro/Examples%20&%20Extras/Fonts/Anton.ttf?fileID=12800000&guid=997a43b767814dd0a7642ec9b78cba41&type=3#Anton');
+    -unity-font-definition: initial;
+    justify-content: flex-start;
+    align-self: center;
+}
+
+.style4:hover {
+    color: rgb(238, 176, 63);
+    scale: 1.2 1.2;
+    transition-duration: 0.8s;
+    background-color: rgba(255, 255, 255, 0);
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0);
+}
