@@ -4,6 +4,7 @@ using UnityEngine;
 using LateExe;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(InputManager))]
 [RequireComponent(typeof(Animator))]
@@ -77,8 +78,28 @@ public class controller : MonoBehaviour{
         if (health < 0)
         {
           animator.SetTrigger("death");
+            StartCoroutine(ChangeScene());
+           
+
         }
         }
+    //private void LateUpdate()
+    //{
+
+    //    if (health < 0)
+    //    {
+           
+    //        SceneManager.LoadScene("start");
+
+    //    }
+    //}
+    IEnumerator ChangeScene()
+    {
+        yield return new WaitForSeconds(5f);
+        SceneManager.LoadScene("start");
+
+        //SceneManager.LoadScene(sceneIndex);
+    }
 
     public void equipMele(){
         if(characterState == 0){
